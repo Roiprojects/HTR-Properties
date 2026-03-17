@@ -1,0 +1,1 @@
+export default function Testimonials() { return <div className="p-8">Testimonials Page</div>; }

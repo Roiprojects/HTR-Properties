@@ -339,6 +339,7 @@ export default function AdminProperties() {
             </form>
           </div>
         </div>
+      )}
       {/* Delete Confirmation Modal */}
       {deleteId && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">

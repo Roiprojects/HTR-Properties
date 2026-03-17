@@ -51,9 +51,9 @@ export default function AdminHeader({ onMenuClick }: { onMenuClick?: () => void 
 
         <button 
           onClick={handleLogout}
-          className="flex items-center gap-2 text-chrome/70 hover:text-destructive transition-colors px-2 py-1.5 rounded-lg hover:bg-destructive/10"
+          className="flex items-center gap-2 text-chrome/70 hover:text-white transition-colors px-4 py-2 rounded-full bg-white/5 hover:bg-destructive border border-white/10 hover:border-destructive cursor-pointer group"
         >
-          <LogOut className="w-4 h-4" />
+          <LogOut className="w-4 h-4 group-hover:scale-110 transition-transform" />
           <span className="text-sm font-medium hidden sm:block">Logout</span>
         </button>
       </div>

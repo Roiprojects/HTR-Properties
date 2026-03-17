@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Search, Plus, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Eye, EyeOff, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
 
 const mockProperties = [
@@ -27,8 +26,8 @@ export default function AdminProperties() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
   
-  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [formData, setFormData] = useState<Partial<Property>>({
     title: "",
@@ -76,9 +75,14 @@ export default function AdminProperties() {
   };
 
   const handleDelete = (id: number) => {
-    if (window.confirm("Are you sure you want to delete this property?")) {
-      setProperties(properties.filter(p => p.id !== id));
+    setDeleteId(id);
+  };
+
+  const confirmDelete = () => {
+    if (deleteId) {
+      setProperties(properties.filter(p => p.id !== deleteId));
       toast.success("Property deleted");
+      setDeleteId(null);
     }
   };
 
@@ -333,6 +337,34 @@ export default function AdminProperties() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      {/* Delete Confirmation Modal */}
+      {deleteId && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setDeleteId(null)}></div>
+          <div className="relative w-full max-w-sm glass-card bg-[#0F0F1A] border border-white/10 rounded-2xl p-6 text-center shadow-2xl">
+            <div className="w-16 h-16 bg-red-400/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle className="w-8 h-8 text-red-400" />
+            </div>
+            <h3 className="text-xl font-serif text-white mb-2">Are you sure?</h3>
+            <p className="text-chrome/70 text-sm mb-6">
+              This action cannot be undone. This property will be permanently removed from the system.
+            </p>
+            <div className="flex gap-3">
+              <button 
+                onClick={() => setDeleteId(null)}
+                className="flex-1 py-2 rounded-lg border border-white/10 text-chrome hover:text-white hover:bg-white/5 transition-all"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmDelete}
+                className="flex-1 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium transition-all"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

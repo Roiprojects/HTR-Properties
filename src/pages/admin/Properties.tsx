@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import toast from "react-hot-toast";
 
 const mockProperties = [
   { id: 1, title: "Skyline Penthouse", level: "Level A", type: "Residential", bhk: "3 BHK", price: "₹4.2 Cr", status: "Active", date: "Oct 12, 2025" },
@@ -110,13 +111,22 @@ export default function AdminProperties() {
                   </td>
                   <td className="px-4 py-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-white transition-colors" title="Toggle Visibility">
+                      <button 
+                        onClick={() => toast.success(`${prop.title} visibility toggled`)}
+                        className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-white transition-colors" title="Toggle Visibility"
+                      >
                         {prop.status === "Active" ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                       </button>
-                      <button className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-accent-teal transition-colors" title="Edit">
+                      <button 
+                        onClick={() => toast.success(`Editing ${prop.title}`)}
+                        className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-accent-teal transition-colors" title="Edit"
+                      >
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 hover:bg-destructive/20 rounded text-chrome hover:text-destructive transition-colors" title="Delete">
+                      <button 
+                        onClick={() => toast.error(`Delete functionality pending for ${prop.title}`)}
+                        className="p-1.5 hover:bg-destructive/20 rounded text-chrome hover:text-destructive transition-colors" title="Delete"
+                      >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>

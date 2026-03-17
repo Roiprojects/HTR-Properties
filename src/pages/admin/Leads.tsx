@@ -1,4 +1,5 @@
 import { Download, Search } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function AdminLeads() {
   const stats = [
@@ -102,7 +103,10 @@ export default function AdminLeads() {
                       </select>
                     </td>
                     <td className="px-4 py-4 text-right">
-                      <button className="text-chrome hover:text-white text-xs underline">
+                      <button 
+                        onClick={() => toast.success(`Opening details for Client ${i}`)}
+                        className="text-chrome hover:text-white text-xs underline"
+                      >
                         View Full
                       </button>
                     </td>

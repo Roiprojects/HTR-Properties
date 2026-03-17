@@ -12,6 +12,8 @@ export default function AdminHeader({ onMenuClick }: { onMenuClick?: () => void 
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
+      // Clear demo auth as well
+      localStorage.removeItem("demo_admin_auth");
       toast.success("Successfully logged out");
       navigate("/admin/login");
     } catch (error) {

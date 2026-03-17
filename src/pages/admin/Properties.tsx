@@ -113,19 +113,19 @@ export default function AdminProperties() {
                     <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
                       <button 
                         onClick={() => toast.success(`${prop.title} visibility toggled`)}
-                        className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-white transition-colors" title="Toggle Visibility"
+                        className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-white transition-colors cursor-pointer" title="Toggle Visibility"
                       >
                         {prop.status === "Active" ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                       </button>
                       <button 
                         onClick={() => toast.success(`Editing ${prop.title}`)}
-                        className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-accent-teal transition-colors" title="Edit"
+                        className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-accent-teal transition-colors cursor-pointer" title="Edit"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button 
                         onClick={() => toast.error(`Delete functionality pending for ${prop.title}`)}
-                        className="p-1.5 hover:bg-destructive/20 rounded text-chrome hover:text-destructive transition-colors" title="Delete"
+                        className="p-1.5 hover:bg-destructive/20 rounded text-chrome hover:text-destructive transition-colors cursor-pointer" title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

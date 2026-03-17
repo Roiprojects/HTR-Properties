@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Layout from "./components/layout/Layout";
 import ScrollToTop from "./components/shared/ScrollToTop";
 import AdminLayout from "./components/layout/AdminLayout";
@@ -23,6 +24,7 @@ import AdminRoute from "./components/layout/AdminRoute";
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>

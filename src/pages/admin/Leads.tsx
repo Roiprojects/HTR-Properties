@@ -105,7 +105,7 @@ export default function AdminLeads() {
                     <td className="px-4 py-4 text-right">
                       <button 
                         onClick={() => toast.success(`Opening details for Client ${i}`)}
-                        className="text-chrome hover:text-white text-xs underline"
+                        className="text-chrome hover:text-white text-xs underline cursor-pointer"
                       >
                         View Full
                       </button>

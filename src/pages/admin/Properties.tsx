@@ -11,9 +11,88 @@ const mockProperties = [
   { id: 5, title: "Compact Studio", level: "Level C", type: "Residential", bhk: "1 BHK", price: "₹45 L", status: "Sold", date: "Sep 28, 2025" },
 ];
 
+interface Property {
+  id: number;
+  title: string;
+  level: string;
+  type: string;
+  bhk: string;
+  price: string;
+  status: string;
+  date: string;
+}
+
 export default function AdminProperties() {
+  const [properties, setProperties] = useState<Property[]>(mockProperties);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All Status");
+  
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProperty, setEditingProperty] = useState<Property | null>(null);
+  const [formData, setFormData] = useState<Partial<Property>>({
+    title: "",
+    level: "Level A",
+    type: "Residential",
+    bhk: "3 BHK",
+    price: "",
+    status: "Active"
+  });
+
+  const handleEdit = (prop: Property) => {
+    setEditingProperty(prop);
+    setFormData(prop);
+    setIsModalOpen(true);
+  };
+
+  const handleAddNew = () => {
+    setEditingProperty(null);
+    setFormData({
+      title: "",
+      level: "Level A",
+      type: "Residential",
+      bhk: "3 BHK",
+      price: "",
+      status: "Active"
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingProperty) {
+      setProperties(properties.map(p => p.id === editingProperty.id ? { ...p, ...formData } as Property : p));
+      toast.success("Property updated successfully");
+    } else {
+      const newProperty = {
+        ...formData,
+        id: Math.max(...properties.map(p => p.id), 0) + 1,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+      } as Property;
+      setProperties([newProperty, ...properties]);
+      toast.success("New property added successfully");
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = (id: number) => {
+    if (window.confirm("Are you sure you want to delete this property?")) {
+      setProperties(properties.filter(p => p.id !== id));
+      toast.success("Property deleted");
+    }
+  };
+
+  const toggleVisibility = (prop: Property) => {
+    const newStatus = prop.status === "Active" ? "Inactive" : "Active";
+    setProperties(properties.map(p => p.id === prop.id ? { ...p, status: newStatus } : p));
+    toast.success(`Visibility toggled to ${newStatus}`);
+  };
+
+  const filteredProperties = properties.filter(prop => {
+    const matchesSearch = prop.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "All Status" || prop.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   const getStatusColor = (status: string) => {
     switch(status) {
@@ -29,9 +108,12 @@ export default function AdminProperties() {
     <div className="max-w-7xl mx-auto flex flex-col h-full space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-serif text-white">Properties Management</h2>
-        <Link to="/admin/properties/new" className="px-4 py-2 bg-gradient-to-r from-accent-violet to-accent-teal rounded-lg text-white font-medium text-sm flex items-center gap-2 hover:shadow-[0_0_15px_rgba(124,58,237,0.4)] transition-all">
+        <button 
+          onClick={handleAddNew}
+          className="px-4 py-2 bg-gradient-to-r from-accent-violet to-accent-teal rounded-lg text-white font-medium text-sm flex items-center gap-2 hover:shadow-[0_0_15px_rgba(124,58,237,0.4)] transition-all cursor-pointer"
+        >
           <Plus className="w-4 h-4" /> Add New Property
-        </Link>
+        </button>
       </div>
 
       <div className="glass-card bg-[#0F0F1A]/50 border border-white/5 rounded-2xl flex-1 flex flex-col overflow-hidden">
@@ -87,7 +169,7 @@ export default function AdminProperties() {
               </tr>
             </thead>
             <tbody>
-              {mockProperties.map(prop => (
+              {filteredProperties.map(prop => (
                 <tr key={prop.id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
                   <td className="px-4 py-4">
                     <input type="checkbox" className="accent-accent-violet rounded" />
@@ -112,19 +194,19 @@ export default function AdminProperties() {
                   <td className="px-4 py-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
                       <button 
-                        onClick={() => toast.success(`${prop.title} visibility toggled`)}
+                        onClick={() => toggleVisibility(prop)}
                         className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-white transition-colors cursor-pointer" title="Toggle Visibility"
                       >
                         {prop.status === "Active" ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                       </button>
                       <button 
-                        onClick={() => toast.success(`Editing ${prop.title}`)}
+                        onClick={() => handleEdit(prop)}
                         className="p-1.5 hover:bg-white/10 rounded text-chrome hover:text-accent-teal transition-colors cursor-pointer" title="Edit"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button 
-                        onClick={() => toast.error(`Delete functionality pending for ${prop.title}`)}
+                        onClick={() => handleDelete(prop.id)}
                         className="p-1.5 hover:bg-destructive/20 rounded text-chrome hover:text-destructive transition-colors cursor-pointer" title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -139,13 +221,121 @@ export default function AdminProperties() {
         
         {/* Pagination Details */}
         <div className="p-4 border-t border-white/5 flex justify-between items-center text-sm text-chrome/50">
-          <span>Showing 1 to 5 of 24 entries</span>
+          <span>Showing 1 to {filteredProperties.length} of {properties.length} entries</span>
           <div className="flex gap-2">
             <button className="px-3 py-1 rounded bg-white/5 hover:bg-white/10 transition-colors disabled:opacity-50" disabled>Previous</button>
             <button className="px-3 py-1 rounded bg-white/5 hover:bg-white/10 transition-colors">Next</button>
           </div>
         </div>
       </div>
+
+      {/* Edit/Add Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
+          <div className="relative w-full max-w-2xl glass-card bg-[#0F0F1A] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="p-6 border-b border-white/5 flex justify-between items-center">
+              <h3 className="text-xl font-serif text-white">{editingProperty ? 'Edit Property' : 'Add New Property'}</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-chrome hover:text-white">&times;</button>
+            </div>
+            
+            <form onSubmit={handleSave} className="p-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-mono uppercase tracking-widest text-chrome/50 mb-1.5">Property Title</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={formData.title}
+                    onChange={e => setFormData({ ...formData, title: e.target.value })}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-accent-violet transition-colors"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-widest text-chrome/50 mb-1.5">Level</label>
+                  <select 
+                    value={formData.level}
+                    onChange={e => setFormData({ ...formData, level: e.target.value })}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-accent-violet transition-colors"
+                  >
+                    <option>Level A</option>
+                    <option>Level B</option>
+                    <option>Level C</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-widest text-chrome/50 mb-1.5">Type</label>
+                  <select 
+                    value={formData.type}
+                    onChange={e => setFormData({ ...formData, type: e.target.value })}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-accent-violet transition-colors"
+                  >
+                    <option>Residential</option>
+                    <option>Commercial</option>
+                    <option>Villa</option>
+                    <option>Studio</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-widest text-chrome/50 mb-1.5">BHK / Config</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. 3 BHK"
+                    value={formData.bhk}
+                    onChange={e => setFormData({ ...formData, bhk: e.target.value })}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-accent-violet transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-widest text-chrome/50 mb-1.5">Price</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. ₹4.2 Cr"
+                    required
+                    value={formData.price}
+                    onChange={e => setFormData({ ...formData, price: e.target.value })}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-accent-violet transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-widest text-chrome/50 mb-1.5">Status</label>
+                  <select 
+                    value={formData.status}
+                    onChange={e => setFormData({ ...formData, status: e.target.value })}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-accent-violet transition-colors"
+                  >
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Sold</option>
+                    <option>Rented</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-6 border-t border-white/5 flex justify-end gap-3">
+                <button 
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-6 py-2 rounded-lg border border-white/10 text-chrome hover:text-white hover:bg-white/5 transition-all"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  className="px-6 py-2 rounded-lg bg-gradient-to-r from-accent-violet to-accent-teal text-white font-medium hover:shadow-[0_0_15px_rgba(124,58,237,0.4)] transition-all"
+                >
+                  {editingProperty ? 'Update Property' : 'Create Property'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

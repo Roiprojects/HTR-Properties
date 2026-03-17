@@ -24,7 +24,13 @@ export default function Footer() {
           {/* Company Links */}
           <div className="flex flex-col gap-4">
             <h4 className="text-chrome font-mono text-sm tracking-widest uppercase mb-2">Company</h4>
-            <Link to="/" className="text-chrome/60 hover:text-accent-teal transition-colors w-fit">Home</Link>
+            <Link 
+              to="/" 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-chrome/60 hover:text-accent-teal transition-colors w-fit"
+            >
+              Home
+            </Link>
             <Link to="/about" className="text-chrome/60 hover:text-accent-teal transition-colors w-fit">About Us</Link>
             <Link to="/contact" className="text-chrome/60 hover:text-accent-teal transition-colors w-fit">Contact</Link>
           </div>

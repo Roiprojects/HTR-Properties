@@ -54,7 +54,11 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-20">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link 
+            to="/" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex items-center gap-2 group"
+          >
             <img src={logo} alt="HTR Properties" className="h-14 w-auto object-contain" />
           </Link>
 
@@ -72,6 +76,7 @@ export default function Navbar() {
                 ) : (
                   <Link
                     to={link.href}
+                    onClick={() => link.href === "/" && window.scrollTo({ top: 0, behavior: 'smooth' })}
                     className="text-chrome hover:text-accent-violet transition-colors py-2 font-medium relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-teal hover:after:w-full after:transition-all after:duration-300"
                   >
                     {link.name}
@@ -155,7 +160,14 @@ export default function Navbar() {
                   </div>
                 </>
               ) : (
-                <Link to={link.href} className="text-2xl text-chrome font-medium hover:text-accent-violet transition-colors">
+                <Link 
+                  to={link.href} 
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (link.href === "/") window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="text-2xl text-chrome font-medium hover:text-accent-violet transition-colors"
+                >
                   {link.name}
                 </Link>
               )}

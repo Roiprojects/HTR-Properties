@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "../../lib/utils";
 import logo from "../../assets/logo.jpg";
+import { useSettings } from "../../contexts/SettingsContext";
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { 
-    name: "Properties", 
-    href: "/properties", 
+  {
+    name: "Properties",
+    href: "/properties",
     dropdown: [
       { name: "Level A — Premium", href: "/properties/level-a" },
       { name: "Level B — Edition", href: "/properties/level-b" },
@@ -23,6 +25,7 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
+  const { settings } = useSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,25 +44,45 @@ export default function Navbar() {
     setDropdownOpen(false);
   }, [location.pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
+  const isDarkHeroPage = location.pathname === "/" || location.pathname === "/about";
+  const linkColorClass = isDarkHeroPage && !isScrolled
+    ? "text-white hover:text-white/80 drop-shadow-sm"
+    : "text-chrome hover:text-accent-violet";
+
   return (
-    <nav
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-primary/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-          : "bg-transparent py-2"
-      )}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          
-          {/* Logo */}
-          <Link 
-            to="/" 
+    <>
+      <nav
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          isScrolled
+            ? "bg-primary/80 backdrop-blur-md border-b border-black/10 shadow-lg"
+            : "bg-transparent py-2"
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+
+            {/* Logo */}
+            <Link
+            to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2 group logo-container"
           >
-            <img src={logo} alt="HTR Properties" className="h-14 w-auto object-contain" />
+            <div className="logo-glow">
+              <img src={logo} alt="HTR Properties" className="h-14 w-auto object-contain relative z-10" />
+            </div>
           </Link>
 
           {/* Desktop Nav */}
@@ -67,8 +90,8 @@ export default function Navbar() {
             {NAV_LINKS.map((link) => (
               <div key={link.name} className="relative group" onMouseLeave={() => link.dropdown && setDropdownOpen(false)}>
                 {link.dropdown ? (
-                  <button 
-                    className="flex items-center gap-1 text-chrome hover:text-accent-violet transition-colors py-2 font-medium"
+                  <button
+                    className={cn("flex items-center gap-1 transition-colors py-2 font-medium", linkColorClass)}
                     onMouseEnter={() => setDropdownOpen(true)}
                   >
                     {link.name} <ChevronDown className="w-4 h-4" />
@@ -77,7 +100,7 @@ export default function Navbar() {
                   <Link
                     to={link.href}
                     onClick={() => link.href === "/" && window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="text-chrome hover:text-accent-violet transition-colors py-2 font-medium relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-teal hover:after:w-full after:transition-all after:duration-300"
+                    className={cn("transition-colors py-2 font-medium relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-accent-teal hover:after:w-full after:transition-all after:duration-300", linkColorClass)}
                   >
                     {link.name}
                   </Link>
@@ -103,16 +126,18 @@ export default function Navbar() {
 
           {/* Right CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <a 
-              href="https://wa.me/1234567890?text=Hi%20Antigravity%2C%20I%27m%20interested%20in%20a%20property" 
-              target="_blank" 
+            {settings?.whatsapp && (
+            <a
+              href={settings.whatsapp}
+              target="_blank"
               rel="noreferrer"
               className="w-10 h-10 rounded-full flex items-center justify-center bg-[#25D366]/20 text-[#4ade80] hover:bg-[#25D366] hover:text-white transition-all hover:scale-110 shadow-[0_0_20px_rgba(37,211,102,0.5)] drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]"
             >
               <FaWhatsapp className="w-5 h-5" />
             </a>
-            <Link 
-              to="/contact" 
+            )}
+            <Link
+              to="/contact"
               className="px-6 py-2.5 rounded-full bg-gradient-to-r from-accent-violet to-accent-teal text-white font-medium hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] transition-all hover:-translate-y-0.5"
             >
               Book Visit
@@ -123,28 +148,34 @@ export default function Navbar() {
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="text-chrome hover:text-accent-teal transition-colors"
+              className={cn("transition-colors", isDarkHeroPage && !isScrolled ? "text-white drop-shadow-sm hover:text-white/80" : "text-chrome hover:text-accent-teal")}
             >
               <Menu className="w-7 h-7" />
             </button>
           </div>
         </div>
       </div>
+      </nav>
 
       {/* Mobile Drawer */}
-      <div 
-        className={cn(
-          "fixed inset-0 z-[100] bg-primary/95 backdrop-blur-xl transition-transform duration-300 lg:hidden flex flex-col",
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        )}
-      >
+      {createPortal(
+        <div
+          className={cn(
+            "fixed inset-0 z-[100] bg-primary/98 backdrop-blur-2xl transition-transform duration-300 lg:hidden flex flex-col",
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          )}
+        >
         <div className="flex justify-between items-center p-6 border-b border-accent-violet/10">
-          <img src={logo} alt="HTR Properties" className="h-12 w-auto object-contain" />
+          <div className="logo-container">
+            <div className="logo-glow">
+              <img src={logo} alt="HTR Properties" className="h-12 w-auto object-contain relative z-10" />
+            </div>
+          </div>
           <button onClick={() => setMobileMenuOpen(false)} className="text-chrome hover:text-accent-teal">
             <X className="w-8 h-8" />
           </button>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto py-8 px-6 flex flex-col gap-6">
           {NAV_LINKS.map((link) => (
             <div key={link.name} className="flex flex-col gap-4">
@@ -160,8 +191,8 @@ export default function Navbar() {
                   </div>
                 </>
               ) : (
-                <Link 
-                  to={link.href} 
+                <Link
+                  to={link.href}
                   onClick={() => {
                     setMobileMenuOpen(false);
                     if (link.href === "/") window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -176,14 +207,16 @@ export default function Navbar() {
         </div>
 
         <div className="p-6 border-t border-accent-violet/20 flex flex-col gap-4">
-           <Link 
-              to="/contact" 
-              className="w-full py-4 text-center rounded-xl bg-gradient-to-r from-accent-violet to-accent-teal text-white font-medium text-lg"
-            >
-              Book Visit
-            </Link>
+          <Link
+            to="/contact"
+            className="w-full py-4 text-center rounded-xl bg-gradient-to-r from-accent-violet to-accent-teal text-white font-medium text-lg"
+          >
+            Book Visit
+          </Link>
         </div>
-      </div>
-    </nav>
+      </div>,
+      document.body
+      )}
+    </>
   );
 }

@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import FloatingButtons from "../shared/FloatingButtons";
 import ScrollToTopButton from "../shared/ScrollToTopButton";
+import WelcomePopup from "../shared/WelcomePopup";
 
 export default function Layout() {
   return (
@@ -14,6 +15,7 @@ export default function Layout() {
       <Footer />
       <FloatingButtons />
       <ScrollToTopButton />
+      <WelcomePopup />
     </div>
   );
 }

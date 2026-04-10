@@ -19,42 +19,48 @@ import AdminLeads from "./pages/admin/Leads";
 import AdminAnalytics from "./pages/admin/Analytics";
 import AdminSettings from "./pages/admin/Settings";
 import AdminLogin from "./pages/admin/Login";
+import AdminUpdatePassword from "./pages/admin/UpdatePassword";
 import AdminRoute from "./components/layout/AdminRoute";
+
+import { SettingsProvider } from "./contexts/SettingsContext";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Toaster position="top-right" />
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="properties" element={<Properties />} />
-          <Route path="properties/level-a" element={<Properties />} />
-          <Route path="properties/level-b" element={<Properties />} />
-          <Route path="properties/level-c" element={<Properties />} />
-          <Route path="properties/:slug" element={<PropertyDetail />} />
-          <Route path="gallery" element={<Gallery />} />
-          <Route path="testimonials" element={<Testimonials />} />
-          <Route path="contact" element={<Contact />} />
-        </Route>
-
-        <Route path="/admin/login" element={<AdminLogin />} />
-
-        <Route path="/admin" element={<AdminRoute />}>
-          <Route element={<AdminLayout />}>
-            <Route index element={<AdminOverview />} />
-            <Route path="properties" element={<AdminProperties />} />
-            <Route path="gallery" element={<AdminGallery />} />
-            <Route path="testimonials" element={<AdminTestimonials />} />
-            <Route path="leads" element={<AdminLeads />} />
-            <Route path="analytics" element={<AdminAnalytics />} />
-            <Route path="settings" element={<AdminSettings />} />
+    <SettingsProvider>
+      <BrowserRouter>
+        <Toaster position="top-right" />
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="properties" element={<Properties />} />
+            <Route path="properties/level-a" element={<Properties />} />
+            <Route path="properties/level-b" element={<Properties />} />
+            <Route path="properties/level-c" element={<Properties />} />
+            <Route path="properties/:slug" element={<PropertyDetail />} />
+            <Route path="gallery" element={<Gallery />} />
+            <Route path="testimonials" element={<Testimonials />} />
+            <Route path="contact" element={<Contact />} />
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/update-password" element={<AdminUpdatePassword />} />
+
+          <Route path="/admin" element={<AdminRoute />}>
+            <Route element={<AdminLayout />}>
+              <Route index element={<AdminOverview />} />
+              <Route path="properties" element={<AdminProperties />} />
+              <Route path="gallery" element={<AdminGallery />} />
+              <Route path="testimonials" element={<AdminTestimonials />} />
+              <Route path="leads" element={<AdminLeads />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </SettingsProvider>
   );
 }
 

@@ -69,7 +69,7 @@ export default function Testimonials() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {textTestimonials.map(item => (
-            <div key={item.id} className="glass-card p-8 rounded-3xl relative group hover:-translate-y-2 transition-transform duration-500">
+            <div key={item.id} className="glass-card p-8 rounded-3xl relative group hover:-translate-y-2 transition-transform duration-500 flex flex-col h-full">
               <div className="absolute top-0 right-8 -translate-y-1/2 text-[120px] font-serif leading-none text-accent-violet/10 select-none">"</div>
 
               <div className="flex gap-1 mb-6 text-accent-violet">
@@ -78,7 +78,7 @@ export default function Testimonials() {
                 ))}
               </div>
 
-              <p className="font-serif text-chrome/80 text-xl italic mb-8 relative z-10">
+              <p className="font-serif text-chrome/80 text-xl italic mb-8 relative z-10 flex-grow">
                 "{item.content}"
               </p>
 

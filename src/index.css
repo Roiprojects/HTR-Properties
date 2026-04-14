@@ -11,14 +11,14 @@
   --color-background: var(--bg-primary);
   --color-foreground: var(--chrome);
 
-  --font-sans: "Cabinet Grotesk", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: "Cormorant Garamond", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Roboto", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 @layer base {
   :root {
-    --bg-primary: #ffffff;
+    --bg-primary: #F6FAF9;
     --bg-secondary: #f4f4f5;
     --accent-violet: #7C3AED;
     --accent-lavender: #8B5CF6;
@@ -28,7 +28,7 @@
     --glass-border: rgba(0, 0, 0, 0.08);
     --glow: 0 0 40px rgba(124, 58, 237, 0.1);
 
-    --background: 0 0% 100%; 
+    --background: 165 25% 97.3%; 
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;

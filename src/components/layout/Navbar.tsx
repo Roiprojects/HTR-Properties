@@ -56,22 +56,17 @@ export default function Navbar() {
     };
   }, [mobileMenuOpen]);
 
-  const isDarkHeroPage = location.pathname === "/" || location.pathname === "/about";
-  const linkColorClass = isDarkHeroPage && !isScrolled
-    ? "text-white hover:text-white/80 drop-shadow-sm"
-    : "text-chrome hover:text-accent-violet";
+  const linkColorClass = "text-chrome hover:text-accent-violet";
 
   return (
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled
-            ? "bg-primary/80 backdrop-blur-md border-b border-black/10 shadow-lg"
-            : "bg-transparent py-2"
+          "fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[95%] xl:w-full max-w-7xl rounded-[2.5rem] px-4",
+          "bg-[#FBFDFA] backdrop-blur-lg border border-black/5 shadow-lg py-1"
         )}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
 
             {/* Logo */}
@@ -148,7 +143,7 @@ export default function Navbar() {
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className={cn("transition-colors", isDarkHeroPage && !isScrolled ? "text-white drop-shadow-sm hover:text-white/80" : "text-chrome hover:text-accent-teal")}
+              className="text-chrome hover:text-accent-teal transition-colors"
             >
               <Menu className="w-7 h-7" />
             </button>

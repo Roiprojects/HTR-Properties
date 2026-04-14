@@ -23,7 +23,8 @@ export default function Settings() {
     metaTitle: "HTR Properties | Premium Real Estate",
     metaDescription: "Experience gravity-defying architecture and unrestricted luxury with HTR Properties.",
     maintenanceMode: false,
-    heroImages: [] as string[]
+    heroImages: [] as string[],
+    aboutStory: ""
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,7 +53,8 @@ export default function Settings() {
           metaTitle: data.meta_title,
           metaDescription: data.meta_description,
           maintenanceMode: data.maintenance_mode,
-          heroImages: data.hero_images || []
+          heroImages: data.hero_images || [],
+          aboutStory: data.about_story || ""
         });
       }
     } catch (error: any) {
@@ -134,6 +136,7 @@ export default function Settings() {
         meta_description: settings.metaDescription,
         maintenance_mode: settings.maintenanceMode,
         hero_images: settings.heroImages,
+        about_story: settings.aboutStory,
         updated_at: new Date().toISOString()
       }, { onConflict: 'id' });
 
@@ -254,6 +257,19 @@ export default function Settings() {
                       value={settings.address}
                       onChange={e => setSettings({ ...settings, address: e.target.value })}
                       className="w-full bg-black/5 border border-black/10 rounded-lg py-2.5 px-4 text-chrome focus:outline-none focus:border-accent-violet transition-colors resize-none"
+                    ></textarea>
+                  </div>
+
+                  <div>
+                    <label className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-chrome/50 mb-2">
+                       Our Story (About Us)
+                    </label>
+                    <textarea
+                      rows={6}
+                      value={settings.aboutStory}
+                      onChange={e => setSettings({ ...settings, aboutStory: e.target.value })}
+                      className="w-full bg-black/5 border border-black/10 rounded-lg py-2.5 px-4 text-chrome focus:outline-none focus:border-accent-violet transition-colors resize-none"
+                      placeholder="Enter your company story here. If left empty, the story section will be hidden from the About page."
                     ></textarea>
                   </div>
                 </div>

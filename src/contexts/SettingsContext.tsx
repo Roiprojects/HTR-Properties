@@ -14,8 +14,8 @@ export interface SiteSettings {
   twitter: string;
   metaTitle: string;
   metaDescription: string;
-  maintenanceMode: boolean;
   heroImages: string[];
+  aboutStory?: string;
 }
 
 interface SettingsContextType {
@@ -53,7 +53,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           metaTitle: data.meta_title,
           metaDescription: data.meta_description,
           maintenanceMode: data.maintenance_mode,
-          heroImages: data.hero_images || []
+          heroImages: data.hero_images || [],
+          aboutStory: data.about_story
         });
 
         if (data.meta_title) {

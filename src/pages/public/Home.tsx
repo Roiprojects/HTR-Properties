@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Search, MapPin, ArrowRight, ShieldCheck, Headphones, TrendingUp, Loader2 } from "lucide-react";
 import { useSettings } from "../../contexts/SettingsContext";
 import { supabase } from "../../lib/supabase";

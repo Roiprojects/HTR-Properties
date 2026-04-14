@@ -62,8 +62,9 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          "fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[95%] xl:w-full max-w-7xl rounded-[2.5rem] px-4",
-          "bg-[#FBFDFA] backdrop-blur-lg border border-black/5 shadow-lg py-1"
+          "fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[95%] xl:w-full max-w-7xl rounded-[2.5rem] px-4",
+          isScrolled ? "top-2 py-0 shadow-xl bg-[#FBFDFA]/95" : "top-6 py-1 shadow-lg bg-[#FBFDFA]",
+          "backdrop-blur-lg border border-black/5"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -14,6 +14,7 @@ export interface SiteSettings {
   twitter: string;
   metaTitle: string;
   metaDescription: string;
+  maintenanceMode: boolean;
   heroImages: string[];
   aboutStory?: string;
 }

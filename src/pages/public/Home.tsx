@@ -77,18 +77,11 @@ export default function Home() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0">
         {/* Background Carousel */}
         <div className="absolute inset-0 z-0">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={currentImageIndex}
-              src={displayImages[currentImageIndex] || displayImages[0]}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              alt="Luxury Property"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </AnimatePresence>
+          <img
+            src={displayImages[currentImageIndex] || displayImages[0]}
+            alt="Luxury Property"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
 
           {/* Multi-layered Overlay for Maximum Contrast */}
           <div className="absolute inset-0 bg-black/40"></div>

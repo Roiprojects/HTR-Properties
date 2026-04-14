@@ -78,8 +78,8 @@ export default function About() {
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-4 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 text-chrome">
           <img
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000"
-            alt="Futuristic Architecture"
+            src="/about-hero.png"
+            alt="South Indian Luxury Architecture"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40"></div>
@@ -112,10 +112,11 @@ export default function About() {
                 <span className="text-accent-teal font-mono text-sm uppercase tracking-widest">The Genesis</span>
                 Our Story
               </h2>
+              <h5>HTR Properties is a premier real estate.</h5>
               <div className="prose prose-slate prose-lg text-chrome/80">
-                <div className="whitespace-pre-wrap">
+                <p className="whitespace-pre-wrap">
                   {settings.aboutStory}
-                </div>
+                </p>
               </div>
             </motion.div>
             <motion.div

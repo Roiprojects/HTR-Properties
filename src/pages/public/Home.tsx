@@ -6,10 +6,10 @@ import { useSettings } from "../../contexts/SettingsContext";
 import { supabase } from "../../lib/supabase";
 
 const DEFAULT_HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=2000",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000",
-  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=2000",
-  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=2000"
+  "/hero-home-1.png",
+  "/hero-home-2.png",
+  "/hero-home-3.png",
+  "/hero-home-4.png"
 ];
 
 export default function Home() {

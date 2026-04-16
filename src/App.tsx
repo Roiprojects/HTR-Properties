@@ -46,6 +46,7 @@ function App() {
 
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/update-password" element={<AdminUpdatePassword />} />
+          <Route path="/admin/update_password" element={<AdminUpdatePassword />} />
 
           <Route path="/admin" element={<AdminRoute />}>
             <Route element={<AdminLayout />}>

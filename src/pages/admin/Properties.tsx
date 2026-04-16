@@ -340,7 +340,7 @@ export default function AdminProperties() {
         </div>
 
         {/* Table */}
-        <div className="flex-1 overflow-auto custom-scrollbar">
+        <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar w-full relative">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 text-chrome/40 space-y-4">
               <Loader2 className="w-10 h-10 animate-spin" />

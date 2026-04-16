@@ -2,21 +2,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import toast from "react-hot-toast";
-import { Lock } from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import logo from "../../assets/logo.jpg";
 
 export default function AdminLogin() {
-  const adminEmail = "htrproperties2018@gmail.com";
+  const [email, setEmail] = useState("htrproperties2018@gmail.com");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResetMode, setIsResetMode] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    const { error } = await supabase.auth.resetPasswordForEmail(adminEmail, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/admin/update-password`,
     });
 
@@ -40,13 +41,14 @@ export default function AdminLogin() {
     
     // Attempt login
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: adminEmail,
+      email,
       password,
     });
 
     if (error) {
       // For demonstration purposes, if the creds match the prompt exactly, allow it
-      if (adminEmail === "htrproperties2018@gmail.com" && password === "Harish@htrproperty0987") {
+      const allowedDemoEmails = ["htrproperties2018@gmail.com", "roiprojects012@gmail.com"];
+      if (allowedDemoEmails.includes(email) && password === "Harish@htrproperty0987") {
         toast.success("Login Successful (Demo Mode)", { 
           style: { background: '#ffffff', color: '#18181b', border: '1px solid #7C3AED' } 
         });
@@ -84,9 +86,20 @@ export default function AdminLogin() {
           <form onSubmit={handleResetPassword} className="space-y-6">
             <div className="text-center mb-6">
               <p className="text-chrome/70">
-                A password reset link will be sent to the admin email:
+                A password reset link will be sent to your email address.
               </p>
-              <p className="font-medium text-chrome mt-2">{adminEmail}</p>
+            </div>
+
+            <div>
+              <label className="block text-chrome/70 text-sm mb-2">Email Address</label>
+              <input 
+                type="email" 
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-chrome focus:outline-none focus:border-accent-violet transition-colors" 
+                placeholder="admin@example.com"
+              />
             </div>
 
             <button 
@@ -112,10 +125,15 @@ export default function AdminLogin() {
         ) : (
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-chrome/70 text-sm mb-2">Admin Account</label>
-              <div className="w-full bg-black/10 border border-black/10 rounded-xl py-3 px-4 text-chrome/70 cursor-not-allowed">
-                {adminEmail}
-              </div>
+              <label className="block text-chrome/70 text-sm mb-2">Admin Email</label>
+              <input 
+                type="email" 
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-chrome focus:outline-none focus:border-accent-violet transition-colors" 
+                placeholder="admin@example.com"
+              />
             </div>
             <div>
               <label className="block text-chrome/70 text-sm mb-2 flex justify-between">
@@ -128,14 +146,23 @@ export default function AdminLogin() {
                   Forgot Password?
                 </button>
               </label>
-              <input 
-                type="password" 
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-chrome focus:outline-none focus:border-accent-violet transition-colors" 
-                placeholder="••••••••"
-              />
+              <div className="relative">
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 pr-12 text-chrome focus:outline-none focus:border-accent-violet transition-colors" 
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-chrome/40 hover:text-accent-violet transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
 
             <button 
@@ -153,6 +180,7 @@ export default function AdminLogin() {
             </button>
           </form>
         )}
+
       </div>
     </div>
   );

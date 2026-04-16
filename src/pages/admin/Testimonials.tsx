@@ -221,7 +221,7 @@ export default function Testimonials() {
         </div>
 
         {/* Table */}
-        <div className="flex-1 overflow-auto custom-scrollbar">
+        <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar w-full relative">
           <table className="w-full text-left text-sm text-chrome border-collapse min-w-[900px]">
             <thead className="text-xs uppercase bg-black/5 text-chrome/60 sticky top-0 z-10 backdrop-blur-md">
               <tr>

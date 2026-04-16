@@ -170,7 +170,7 @@ export default function Properties() {
   return (
     <div className="flex flex-col min-h-screen bg-primary">
       {/* Header Banner */}
-      <section className="relative pt-32 pb-16 px-4 border-b border-accent-violet/20 bg-secondary/50">
+      <section className="relative pt-12 pb-16 px-4 border-b border-accent-violet/20 bg-secondary/50">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
           <span className="px-4 py-1.5 mb-6 bg-accent-violet/10 border border-accent-violet/30 text-accent-violet font-mono text-sm tracking-widest uppercase rounded-full">
             {filteredProperties.length} Properties Available

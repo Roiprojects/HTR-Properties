@@ -62,8 +62,8 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          "fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[95%] xl:w-full max-w-7xl rounded-[2.5rem] px-4",
-          isScrolled ? "top-2 py-0 shadow-xl bg-[#FBFDFA]/95" : "top-6 py-1 shadow-lg bg-[#FBFDFA]",
+          "lg:fixed lg:left-1/2 lg:-translate-x-1/2 sticky mx-auto z-50 transition-all duration-500 w-[90%] xl:w-full max-w-7xl rounded-[2.5rem] px-4",
+          isScrolled ? "top-1 lg:top-2 py-0 shadow-xl bg-[#FBFDFA]/95" : "top-3 lg:top-6 py-1 shadow-lg bg-[#FBFDFA]",
           "backdrop-blur-lg border border-black/5"
         )}
       >
@@ -172,7 +172,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-8 px-6 flex flex-col gap-6">
+        <div className="flex-1 overflow-y-auto py-6 px-6 flex flex-col gap-5">
           {NAV_LINKS.map((link) => (
             <div key={link.name} className="flex flex-col gap-4">
               {link.dropdown ? (
@@ -180,7 +180,7 @@ export default function Navbar() {
                   <div className="text-chrome/50 font-mono text-xs tracking-widest uppercase">{link.name}</div>
                   <div className="flex flex-col gap-4 pl-4 border-l border-accent-violet/10">
                     {link.dropdown.map(subItem => (
-                      <Link key={subItem.name} to={subItem.href} className="text-xl text-chrome font-medium">
+                      <Link key={subItem.name} to={subItem.href} className="text-base text-chrome font-medium">
                         {subItem.name}
                       </Link>
                     ))}
@@ -193,7 +193,7 @@ export default function Navbar() {
                     setMobileMenuOpen(false);
                     if (link.href === "/") window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="text-2xl text-chrome font-medium hover:text-accent-violet transition-colors"
+                  className="text-lg text-chrome font-medium hover:text-accent-violet transition-colors"
                 >
                   {link.name}
                 </Link>

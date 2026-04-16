@@ -12,21 +12,56 @@ export default function UpdatePassword() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is actually in a session or recovery mode
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        // If they just clicked the link, Supabase often sets the session automatically
-        // via the URL fragment #access_token
-        // But if it's completely missing after mounting, they shouldn't be here.
-        // We'll trust the auth state listener under the hood if the user is present.
+    // Check for errors in the URL hash (e.g., from Supabase redirects)
+    const checkUrlErrors = () => {
+      const hash = window.location.hash;
+      if (hash && hash.includes("error=")) {
+        const params = new URLSearchParams(hash.substring(1)); // Remove '#'
+        const error = params.get("error");
+        const errorCode = params.get("error_code");
+        const errorDescription = params.get("error_description");
+
+        if (error || errorCode) {
+          console.error("Auth error:", { error, errorCode, errorDescription });
+          
+          let message = "Authentication failed. Please try again.";
+          if (errorCode === "otp_expired" || errorDescription?.toLowerCase().includes("expired")) {
+            message = "Your reset link has expired. Please request a new one.";
+          }
+
+          toast.error(message, {
+            duration: 6000,
+            style: { background: '#ffffff', color: '#EF4444', border: '1px solid #EF4444' }
+          });
+          
+          // Clear hash and redirect back to login
+          window.location.hash = "";
+          setTimeout(() => navigate("/admin/login"), 2000);
+        }
       }
     };
+
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      // If no session and no error in URL, redirect to login
+      const hash = window.location.hash;
+      if (!session && !hash.includes("access_token=") && !hash.includes("error=")) {
+        toast.error("Session missing. Please use a valid reset link.", {
+          style: { background: '#ffffff', color: '#EF4444', border: '1px solid #EF4444' }
+        });
+        navigate("/admin/login");
+      }
+    };
+
+    checkUrlErrors();
     checkSession();
-  }, []);
+  }, [navigate]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check passwords match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match", {
         style: { background: '#ffffff', color: '#EF4444', border: '1px solid #EF4444' }
@@ -36,6 +71,17 @@ export default function UpdatePassword() {
 
     setIsSubmitting(true);
     
+    // Check session again before update
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast.error("Auth session missing. Please try requesting a new reset link.", {
+        style: { background: '#ffffff', color: '#EF4444', border: '1px solid #EF4444' }
+      });
+      setIsSubmitting(false);
+      setTimeout(() => navigate("/admin/login"), 2000);
+      return;
+    }
+
     const { error } = await supabase.auth.updateUser({
       password: password
     });
@@ -48,7 +94,6 @@ export default function UpdatePassword() {
       toast.success("Password updated successfully!", { 
         style: { background: '#ffffff', color: '#18181b', border: '1px solid #7C3AED' } 
       });
-      // Sign them out so they can explicitly log back in, or redirect to admin
       await supabase.auth.signOut();
       navigate("/admin/login");
     }

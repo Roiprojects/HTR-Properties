@@ -75,7 +75,7 @@ export default function About() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 1. Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-4 flex items-center justify-center overflow-hidden">
+      <section className="relative pt-12 pb-20 lg:pt-48 lg:pb-32 px-4 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 text-chrome">
           <img
             src="/about-hero.png"
@@ -296,10 +296,10 @@ export default function About() {
               The Real Estate Regulation and Development (RERA) Act, 2016 is considered as one of the landmark legislations passed by the Government of India. Its objective is to reform the real estate sector in India, encouraging greater transparency, citizen centricity, accountability and financial discipline. This is in line with the vast and growing economy of India as in future many people will be investing in the real estate sector.
             </p>
             
-            <div className="inline-block bg-white border border-black/10 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div className="block sm:inline-block bg-white border border-black/10 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
               <p className="font-mono text-xs text-chrome/50 uppercase tracking-widest mb-1 pl-2">RERA Registration No</p>
-              <p className="font-mono text-sm md:text-base font-bold text-chrome pl-2 tracking-wide group-hover:text-red-700 transition-colors">
+              <p className="font-mono text-xs sm:text-sm md:text-base font-bold text-chrome pl-2 tracking-wide group-hover:text-red-700 transition-colors break-all">
                 PRM/KA/RERA/1251/309/AG/190125/001242
               </p>
             </div>

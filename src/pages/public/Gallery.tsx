@@ -57,7 +57,7 @@ export default function Gallery() {
 
   return (
     <div className="min-h-screen bg-primary pb-20">
-      <section className="pt-32 pb-16 px-4 text-center">
+      <section className="pt-12 pb-16 px-4 text-center">
         <h1 className="font-serif text-4xl md:text-6xl text-chrome mb-6">Gallery</h1>
         <p className="text-chrome/70 text-lg max-w-2xl mx-auto mb-12">
           A visual journey through spaces where architecture defies gravity and imagination knows no bounds.

@@ -45,7 +45,7 @@ export default function Testimonials() {
 
   return (
     <div className="min-h-screen bg-primary">
-      <section className="relative pt-12 pb-16 px-4 border-b border-accent-violet/10">
+      <section className="relative pt-32 pb-16 px-4 border-b border-accent-violet/10">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="font-serif text-4xl md:text-6xl text-chrome mb-4">What Our Clients Say</h1>
           <p className="text-chrome/70 text-lg">Real stories from people who chose to rise above the ordinary.</p>

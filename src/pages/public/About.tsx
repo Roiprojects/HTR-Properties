@@ -75,7 +75,7 @@ export default function About() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 1. Hero Section */}
-      <section className="relative pt-12 pb-20 lg:pt-48 lg:pb-32 px-4 flex items-center justify-center overflow-hidden">
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-4 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 text-chrome">
           <img
             src="/about-hero.png"

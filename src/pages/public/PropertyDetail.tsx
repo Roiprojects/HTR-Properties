@@ -120,7 +120,7 @@ export default function PropertyDetail() {
   return (
     <div className="min-h-screen bg-primary pb-20">
       {/* 1. Gallery Section */}
-      <section className="h-[60vh] md:h-[75vh] w-full relative grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-2 p-2 pt-6 md:pt-20">
+      <section className="h-[60vh] md:h-[75vh] w-full relative grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-2 p-2 pt-20 md:pt-32">
         <div className="md:col-span-2 row-span-2 relative group overflow-hidden rounded-xl bg-black/5">
           <img src={image1} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Main" />
           <Link to="/properties" className="absolute top-4 left-4 w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-accent-violet transition-colors">

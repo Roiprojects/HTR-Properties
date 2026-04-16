@@ -127,7 +127,7 @@ export default function Navbar() {
               href={settings.whatsapp}
               target="_blank"
               rel="noreferrer"
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-[#25D366]/20 text-[#4ade80] hover:bg-[#25D366] hover:text-white transition-all hover:scale-110 shadow-[0_0_20px_rgba(37,211,102,0.5)] drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]"
+              className="w-10 h-10 rounded-full flex items-center justify-center bg-[#25D366]/20 text-[#075E54] hover:bg-[#25D366] hover:text-white transition-all hover:scale-110 shadow-[0_0_20px_rgba(37,211,102,0.5)] drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]"
             >
               <FaWhatsapp className="w-5 h-5" />
             </a>

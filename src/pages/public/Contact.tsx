@@ -66,7 +66,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-primary pb-24">
-      <section className="relative pt-12 pb-16 px-4 border-b border-accent-violet/10">
+      <section className="relative pt-32 pb-16 px-4 border-b border-accent-violet/10">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-teal/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <h1 className="font-serif text-4xl md:text-6xl text-chrome mb-4">Connect With Us</h1>

@@ -15,6 +15,7 @@ const DEFAULT_HERO_IMAGES = [
 export default function Home() {
   const { settings } = useSettings();
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchPurpose, setSearchPurpose] = useState("Any");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
@@ -51,6 +52,7 @@ export default function Home() {
           price: p.price,
           specs: [p.bhk || 'N/A BHK', p.sq_ft || 'N/A sq.ft.', p.type || 'Residential'],
           level: p.level || 'Level A',
+          purpose: p.purpose || 'Buy',
           image: p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800'
         }));
         setFeaturedProperties(mappedProps);
@@ -64,11 +66,11 @@ export default function Home() {
   }, []);
 
   const handleSearch = () => {
-    if (searchQuery.trim()) {
-      navigate(`/properties?search=${encodeURIComponent(searchQuery.trim())}`);
-    } else {
-      navigate("/properties");
-    }
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.append("search", searchQuery.trim());
+    if (searchPurpose !== "Any") params.append("purpose", searchPurpose);
+    
+    navigate(params.toString() ? `/properties?${params.toString()}` : "/properties");
   };
 
   return (
@@ -147,15 +149,20 @@ export default function Home() {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               className="w-full bg-black/5 border border-black/10 rounded-lg py-3 pl-10 pr-4 text-chrome focus:outline-none focus:border-accent-violet/50 transition-colors"
-            />
-          </div>
+          />
+        </div>
 
-          <select className="bg-black/5 border border-accent-violet/20 rounded-lg py-3 px-4 text-chrome focus:outline-none focus:border-accent-violet/50 min-w-[140px]">
-            <option>Buy</option>
-            <option>Rent</option>
-          </select>
+        <select 
+          value={searchPurpose}
+          onChange={(e) => setSearchPurpose(e.target.value)}
+          className="bg-black/5 border border-accent-violet/20 rounded-lg py-3 px-4 text-chrome focus:outline-none focus:border-accent-violet/50 min-w-[140px]"
+        >
+          <option>Any</option>
+          <option>Buy</option>
+          <option>Rent</option>
+        </select>
 
-          <select className="bg-black/5 border border-accent-violet/20 rounded-lg py-3 px-4 text-chrome focus:outline-none focus:border-accent-violet/50 min-w-[140px]">
+        <select className="bg-black/5 border border-accent-violet/20 rounded-lg py-3 px-4 text-chrome focus:outline-none focus:border-accent-violet/50 min-w-[140px]">
             <option>All Levels</option>
             <option>Level A</option>
             <option>Level B</option>
@@ -233,6 +240,9 @@ export default function Home() {
                     </span>
                     <span className="px-3 py-1 bg-white/90 border border-accent-teal text-accent-teal font-mono text-xs uppercase tracking-widest rounded shadow-sm">
                       {property.level}
+                    </span>
+                    <span className="px-3 py-1 bg-black/40 backdrop-blur-md text-white font-mono text-xs uppercase tracking-widest rounded shadow-sm">
+                      For {property.purpose}
                     </span>
                   </div>
                 </div>

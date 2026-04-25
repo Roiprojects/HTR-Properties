@@ -10,7 +10,7 @@ export default function Properties() {
 
   // Filter States
   const [keyword, setKeyword] = useState(searchParams.get("search") || "");
-  const [purpose, setPurpose] = useState("Any");
+  const [purpose, setPurpose] = useState(searchParams.get("purpose") || "Any");
   const [propertyType, setPropertyType] = useState("Any");
   const [maxPrice, setMaxPrice] = useState(500); // 500 Cr as default high
   const [selectedBHKs, setSelectedBHKs] = useState<string[]>([]);
@@ -23,7 +23,7 @@ export default function Properties() {
   // Applied status
   const [activeFilters, setActiveFilters] = useState({
     keyword: searchParams.get("search") || "",
-    purpose: "Any",
+    purpose: searchParams.get("purpose") || "Any",
     propertyType: "Any",
     maxPrice: 500,
     bhks: [] as string[]
@@ -100,7 +100,7 @@ export default function Properties() {
           specs: [p.bhk || 'N/A BHK', p.sq_ft || 'N/A sq.ft.', p.type || 'Residential'],
           level: p.level || 'Level A',
           type: p.type || 'Residential',
-          purpose: 'Buy', // Defaulting to Buy as there is no purpose column
+          purpose: p.purpose || 'Buy',
           featured: p.featured || false,
           image: p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800'
         }));

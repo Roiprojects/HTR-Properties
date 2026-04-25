@@ -21,6 +21,7 @@ interface Property {
   amenities?: string[];
   location?: { address?: string };
   created_at: string;
+  purpose?: string;
 }
 
 const MOCK_PROPERTIES: Property[] = [
@@ -153,6 +154,9 @@ export default function PropertyDetail() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-wrap items-center gap-3 mb-4">
+              {property.purpose && (
+                <span className="px-3 py-1 bg-accent-lavender/10 text-accent-violet font-mono border border-accent-violet/30 rounded-md text-xs tracking-widest uppercase">For {property.purpose}</span>
+              )}
               <span className="px-3 py-1 bg-accent-violet/10 text-accent-violet font-mono border border-accent-violet/30 rounded-md text-xs tracking-widest uppercase">{property.status}</span>
               <span className="px-3 py-1 bg-accent-teal/10 text-accent-teal font-mono border border-accent-teal/30 rounded-md text-xs tracking-widest uppercase">{property.level}</span>
               <span className="px-3 py-1 bg-black/5 text-chrome font-mono border border-black/10 rounded-md text-xs tracking-widest uppercase">{property.type}</span>

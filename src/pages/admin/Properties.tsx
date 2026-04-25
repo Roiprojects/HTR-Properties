@@ -20,6 +20,7 @@ interface Property {
   location?: any;
   created_at: string;
   featured?: boolean;
+  purpose?: string;
 }
 
 interface PropertyFormData extends Partial<Property> {
@@ -61,7 +62,8 @@ export default function AdminProperties() {
     description: "",
     amenitiesText: "",
     locationText: "",
-    featured: false
+    featured: false,
+    purpose: "Buy"
   });
 
   useEffect(() => {
@@ -111,7 +113,8 @@ export default function AdminProperties() {
       sq_ft: prop.sq_ft || "",
       amenitiesText: prop.amenities?.join(', ') || "",
       locationText: prop.location?.address || "",
-      featured: prop.featured || false
+      featured: prop.featured || false,
+      purpose: prop.purpose || "Buy"
     });
     setIsModalOpen(true);
   };
@@ -131,7 +134,8 @@ export default function AdminProperties() {
       description: "",
       amenitiesText: "",
       locationText: "",
-      featured: false
+      featured: false,
+      purpose: "Buy"
     });
     setIsModalOpen(true);
   };
@@ -154,7 +158,8 @@ export default function AdminProperties() {
         description: formData.description || "",
         amenities: formData.amenitiesText ? formData.amenitiesText.split(',').map(s => s.trim()).filter(Boolean) : [],
         location: { address: formData.locationText || "" },
-        featured: formData.featured || false
+        featured: formData.featured || false,
+        purpose: formData.purpose || "Buy"
       };
 
       if (editingProperty) {
@@ -478,6 +483,18 @@ export default function AdminProperties() {
                     <option>Level A</option>
                     <option>Level B</option>
                     <option>Level C</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-widest text-chrome/50 mb-1.5">Purpose</label>
+                  <select 
+                    value={formData.purpose || "Buy"}
+                    onChange={e => setFormData({ ...formData, purpose: e.target.value })}
+                    className="w-full bg-black/5 border border-black/10 rounded-lg py-2 px-4 text-chrome focus:outline-none focus:border-accent-violet transition-colors"
+                  >
+                    <option>Buy</option>
+                    <option>Rent</option>
                   </select>
                 </div>
 

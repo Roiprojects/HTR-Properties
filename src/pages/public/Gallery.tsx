@@ -46,7 +46,16 @@ export default function Gallery() {
 
   const filteredImages = activeTab === "All" 
     ? dbImages 
-    : dbImages.filter((img) => img.category === activeTab);
+    : dbImages.filter((img) => {
+        const cat = img.category?.toLowerCase() || "";
+        const tab = activeTab.toLowerCase();
+        if (cat === tab) return true;
+        // Handle singular/plural mismatches from older data
+        if (tab === "amenities" && cat === "amenity") return true;
+        if (tab === "exteriors" && cat === "exterior") return true;
+        if (tab === "interiors" && cat === "interior") return true;
+        return false;
+      });
 
   const slides = filteredImages.map(img => ({ src: img.url }));
 

@@ -220,7 +220,25 @@ export default function Gallery() {
 
   const filteredImages = images.filter(img => {
     const matchesSearch = img.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === "All Categories" || img.category === categoryFilter;
+    
+    let matchesCategory = false;
+    if (categoryFilter === "All Categories") {
+      matchesCategory = true;
+    } else {
+      const cat = img.category?.toLowerCase() || "";
+      const filterCat = categoryFilter.toLowerCase();
+      
+      if (cat === filterCat) {
+        matchesCategory = true;
+      } else if (filterCat === "amenities" && cat === "amenity") {
+        matchesCategory = true;
+      } else if (filterCat === "exteriors" && cat === "exterior") {
+        matchesCategory = true;
+      } else if (filterCat === "interiors" && cat === "interior") {
+        matchesCategory = true;
+      }
+    }
+    
     return matchesSearch && matchesCategory;
   });
 

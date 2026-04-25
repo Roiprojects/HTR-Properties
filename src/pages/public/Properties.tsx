@@ -59,6 +59,13 @@ export default function Properties() {
     setSelectedBHKs(prev => prev.includes(bhk) ? prev.filter(b => b !== bhk) : [...prev, bhk]);
   };
 
+  // Adjust max price when purpose changes to Rent
+  useEffect(() => {
+    if (purpose === "Rent" && maxPrice > 10) {
+      setMaxPrice(10);
+    }
+  }, [purpose]);
+
   // Determine Level from URL
   let levelName = "All Properties";
   let levelTagline = "Discover our entire curated collection.";
@@ -245,12 +252,12 @@ export default function Properties() {
                 <div>
                   <label className="text-chrome/70 text-sm mb-2 block flex justify-between">
                     <span>Max Price</span>
-                    <span className="text-accent-teal font-mono">₹{maxPrice} Cr</span>
+                    <span className="text-accent-teal font-mono">₹{maxPrice} {purpose === "Rent" ? "Lakh" : "Cr"}</span>
                   </label>
                   <input 
                     type="range" 
                     min="1" 
-                    max="500" 
+                    max={purpose === "Rent" ? "10" : "500"} 
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(parseInt(e.target.value))}
                     className="w-full relative z-10 accent-accent-violet appearance-none h-1 bg-black/10 rounded-full" 

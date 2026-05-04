@@ -132,7 +132,7 @@ export default function WelcomePopup() {
                 </div>
 
                 <div className="relative">
-                  <input {...register("phone")} placeholder="Phone" className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-sm text-chrome placeholder-chrome/40 focus:outline-none focus:border-accent-violet focus:bg-white transition-all shadow-sm" />
+                  <input {...register("phone")} placeholder="Phone Number" className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-sm text-chrome placeholder-chrome/40 focus:outline-none focus:border-accent-violet focus:bg-white transition-all shadow-sm" />
                   {errors.phone && <p className="text-red-500 text-[10px] absolute -bottom-4 left-1">{errors.phone.message}</p>}
                 </div>
               </div>

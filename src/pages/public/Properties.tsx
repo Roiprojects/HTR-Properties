@@ -97,20 +97,35 @@ export default function Properties() {
         if (error) throw error;
         
         // Map database properties to the structure expected by the UI
-        const mappedProps = (data || []).map(p => ({
-          id: p.id,
-          title: p.title,
-          slug: p.slug,
-          location: p.location?.address || 'Premium Location',
-          price: parseFloat(p.price.replace(/[^\d.]/g, '')) || 0, // Extract number for filtering
-          priceStr: p.price,
-          specs: [p.bhk || 'N/A BHK', p.sq_ft || 'N/A sq.ft.', p.type || 'Residential'],
-          level: p.level || 'Level A',
-          type: p.type || 'Residential',
-          purpose: p.purpose || 'Buy',
-          featured: p.featured || false,
-          image: p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800'
-        }));
+        const mappedProps = (data || []).map(p => {
+          const priceStr = p.price || '';
+          const num = parseFloat(priceStr.replace(/[^\d.]/g, '')) || 0;
+          const lower = priceStr.toLowerCase();
+          
+          let priceInr = num;
+          if (lower.includes('cr') || lower.includes('crore')) {
+            priceInr = num * 10000000;
+          } else if (lower.includes('lakh') || lower.includes('lac') || lower.includes('l')) {
+            priceInr = num * 100000;
+          } else if (lower.includes('k')) {
+            priceInr = num * 1000;
+          }
+
+          return {
+            id: p.id,
+            title: p.title,
+            slug: p.slug,
+            location: p.location?.address || 'Premium Location',
+            priceInr: priceInr, // Use normalized INR for accurate filtering/sorting
+            priceStr: p.price,
+            specs: [p.bhk || 'N/A BHK', p.sq_ft || 'N/A sq.ft.', p.type || 'Residential'],
+            level: p.level || 'Level A',
+            type: p.type || 'Residential',
+            purpose: p.purpose || 'Buy',
+            featured: p.featured || false,
+            image: p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800'
+          };
+        });
         setDbProperties(mappedProps);
       } catch (error) {
         console.error("Failed to fetch properties:", error);
@@ -145,7 +160,10 @@ export default function Properties() {
     const matchesType = activeFilters.propertyType === "Any" || prop.type === activeFilters.propertyType;
 
     // Price filter
-    const matchesPrice = prop.price <= activeFilters.maxPrice;
+    const maxPriceInr = activeFilters.purpose === "Rent" 
+      ? activeFilters.maxPrice * 100000 
+      : activeFilters.maxPrice * 10000000;
+    const matchesPrice = prop.priceInr <= maxPriceInr;
 
     // BHK filter
     const matchesBHK = activeFilters.bhks.length === 0 || 
@@ -157,8 +175,8 @@ export default function Properties() {
 
   // Calculate Paginated Data
   const sortedProperties = [...filteredProperties].sort((a, b) => {
-    if (sortBy === "Price: Low to High") return a.price - b.price;
-    if (sortBy === "Price: High to Low") return b.price - a.price;
+    if (sortBy === "Price: Low to High") return a.priceInr - b.priceInr;
+    if (sortBy === "Price: High to Low") return b.priceInr - a.priceInr;
     if (sortBy === "Featured") return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
     return 0;
   });
@@ -243,7 +261,9 @@ export default function Properties() {
                       onChange={(e) => setPropertyType(e.target.value)}
                       className="w-full bg-black/5 border border-black/10 rounded-lg py-2.5 px-3 text-chrome text-sm outline-none"
                     >
-                      <option>Any</option><option>Resid.</option><option>Comm.</option>
+                      <option value="Any">Any</option>
+                      <option value="Residential">Resid.</option>
+                      <option value="Commercial">Comm.</option>
                     </select>
                   </div>
                 </div>
